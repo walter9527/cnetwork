@@ -17,8 +17,7 @@ void *pth_fun(void *pth_arg) {
         else if (ret > 0) {
             printf("server say: %s", buf);
         } else if (ret == 0) {
-            shutdown(sockfd, SHUT_RDWR);
-            break;
+            raise(SIGINT);
         }
     }
 
@@ -56,7 +55,6 @@ int main(int argc, char *argv[]) {
         memset(buf, 0, sizeof(buf));
 
         scanf("%s", buf);
-
         ret = send(sockfd, buf, sizeof(buf), 0);
         if (ret == -1) print_err("send fail", __LINE__, errno);
     }
